@@ -11,9 +11,6 @@ RUN apk update && \
 # Copy in the local repository to build from.
 RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
 
-# goimports
-RUN go get -u -v golang.org/x/tools/cmd/goimports
-
 # protoc
 RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
 	&& cd lnd \
@@ -25,6 +22,9 @@ RUN go get golang.org/x/mobile/cmd/gomobile \
 
 # falafel
 RUN go get -u -v github.com/lightninglabs/falafel
+
+# goimports
+RUN go get -u -v golang.org/x/tools/cmd/goimports
 
 # android
 RUN cd lnd \
