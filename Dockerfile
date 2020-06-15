@@ -15,15 +15,13 @@ RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
 RUN go get -u -v golang.org/x/tools/cmd/goimports
 
 # protoc
-RUN go get -u github.com/lightningnetwork/lnd/lnrpc
-
-# Install dependencies and install/build lnd.
-RUN cd lnd \
+RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
+	&& cd lnd \
 	&& ./scripts/install_travis_proto.sh
 
 # gomobile
-RUN go get golang.org/x/mobile/cmd/gomobile
-RUN gomobile init
+RUN go get golang.org/x/mobile/cmd/gomobile \
+	&& gomobile init
 
 # falafel
 RUN go get -u -v github.com/lightninglabs/falafel
