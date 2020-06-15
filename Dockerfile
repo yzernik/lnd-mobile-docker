@@ -1,12 +1,22 @@
-FROM golang:1.12-alpine as builder
+FROM ubuntu:20.04
 
-RUN apk update && \
-	apk upgrade && \
-	apk add --no-cache \
+RUN apt-get update && apt-get install -y \
+	wget \
 	git \
 	bash \
 	make \
-	sudo
+	sudo \
+	unzip
+
+# Install go
+RUN wget https://dl.google.com/go/go1.12.17.linux-amd64.tar.gz \
+	&& tar -xvf go1.12.17.linux-amd64.tar.gz \
+	&& mv go /usr/local
+ENV GOROOT /usr/local/go
+ENV PATH $GOROOT/bin:$PATH
+ENV GOPATH /root/go
+ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
+ENV APIPATH /root/go/src/api
 
 # Copy in the local repository to build from.
 RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
@@ -30,6 +40,4 @@ RUN go get -u -v golang.org/x/tools/cmd/goimports
 RUN cd lnd \
 	&& make android
 
-# Copy the entrypoint script.
-# COPY "docker/lnd/start-lnd.sh" .
 RUN echo "Finished script"
