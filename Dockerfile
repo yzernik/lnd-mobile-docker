@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y \
 	unzip
 
 # Install go
-RUN wget https://dl.google.com/go/go1.12.17.linux-amd64.tar.gz \
-	&& tar -xvf go1.12.17.linux-amd64.tar.gz \
+RUN wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz \
+	&& tar -xvf go1.14.4.linux-amd64.tar.gz \
 	&& mv go /usr/local
 ENV GOROOT /usr/local/go
 ENV PATH $GOROOT/bin:$PATH
@@ -21,11 +21,6 @@ ENV APIPATH /root/go/src/api
 # Copy in the local repository to build from.
 RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
 
-# protoc
-RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
-	&& cd lnd \
-	&& ./scripts/install_travis_proto.sh
-
 # gomobile
 RUN go get golang.org/x/mobile/cmd/gomobile
 
@@ -34,6 +29,11 @@ RUN go get -u -v github.com/lightninglabs/falafel
 
 # goimports
 RUN go get -u -v golang.org/x/tools/cmd/goimports
+
+# protoc
+RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
+	&& cd lnd \
+	&& ./scripts/install_travis_proto.sh
 
 ENV ANDROID_NDK_HOME /ndk
 
