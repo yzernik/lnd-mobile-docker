@@ -6,8 +6,8 @@ Create lnd mobile libraries using docker
 
 ```
 docker run \
-	-v /home/$USER/Android/Sdk/ndk/<NDK_VERSION>:/ndk \
-	-v /home/$USER/Android/Sdk:/android \
-	-v /home/$USER/work/lnd-mobile-ouput:/generated \
+	-v <ANDROID_NDK_HOME>:/ndk \
+	-v <ANDROID_HOME>:/android \
+	-v <OUTPUT_DIRECTORY>:/generated \
 	mobile-api
 ```

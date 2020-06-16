@@ -45,4 +45,4 @@ RUN apt-get update && \
 	apt-get install -y ant && \
 	apt-get clean;
 
-CMD ["sh", "-c", "gomobile init; cd lnd && make android; cp -r mobile /generated"]
+CMD ["sh", "-c", "gomobile init; cd lnd && make android; cp -r /root/go/src/github.com/lightningnetwork/lnd/mobile /generated;"]
