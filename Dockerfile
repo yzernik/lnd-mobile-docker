@@ -36,5 +36,13 @@ RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
 	&& ./scripts/install_travis_proto.sh
 
 ENV ANDROID_NDK_HOME /ndk
+ENV ANDROID_HOME /android
+
+# Install OpenJDK-8
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+	apt-get install -y openjdk-8-jdk && \
+	apt-get install -y ant && \
+	apt-get clean;
 
 CMD ["sh", "-c", "gomobile init; cd lnd && make android"]
