@@ -35,12 +35,6 @@ RUN go get -u -v github.com/lightninglabs/falafel
 # goimports
 RUN go get -u -v golang.org/x/tools/cmd/goimports
 
-WORKDIR lnd
+ENV ANDROID_NDK_HOME /ndk
 
-# Add the ndk directory
-COPY ndk/ ndk/
-ENV ANDROID_NDK_HOME ndk
-RUN ls -l .
-RUN ls -l $ANDROID_NDK_HOME
-
-CMD ["sh", "-c", "ANDROID_NDK_HOME=ndk gomobile init; make android"]
+CMD ["sh", "-c", "ls -l $ANDROID_NDK_HOME; gomobile init; cd lnd && make android"]
