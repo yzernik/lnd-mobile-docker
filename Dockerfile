@@ -37,4 +37,4 @@ RUN go get -u -v golang.org/x/tools/cmd/goimports
 
 ENV ANDROID_NDK_HOME /ndk
 
-CMD ["sh", "-c", "ls -l $ANDROID_NDK_HOME; gomobile init; cd lnd && make android"]
+CMD ["sh", "-c", "gomobile init; cd lnd && make android"]
