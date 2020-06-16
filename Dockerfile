@@ -18,6 +18,12 @@ ENV GOPATH /root/go
 ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
 ENV APIPATH /root/go/src/api
 
+# Install Java
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+	apt-get install -y openjdk-8-jdk && \
+	apt-get clean;
+
 # Copy in the local repository to build from.
 RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
 
@@ -37,12 +43,5 @@ RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
 
 ENV ANDROID_NDK_HOME /ndk
 ENV ANDROID_HOME /android
-
-# Install OpenJDK-8
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
-	apt-get install -y openjdk-8-jdk && \
-	apt-get install -y ant && \
-	apt-get clean;
 
 CMD ["sh", "-c", "gomobile init; cd lnd && make android; cp -r /root/go/src/github.com/lightningnetwork/lnd/mobile /generated;"]
