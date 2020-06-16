@@ -27,8 +27,7 @@ RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
 	&& ./scripts/install_travis_proto.sh
 
 # gomobile
-RUN go get golang.org/x/mobile/cmd/gomobile \
-	&& gomobile init
+RUN go get golang.org/x/mobile/cmd/gomobile
 
 # falafel
 RUN go get -u -v github.com/lightninglabs/falafel
@@ -36,8 +35,12 @@ RUN go get -u -v github.com/lightninglabs/falafel
 # goimports
 RUN go get -u -v golang.org/x/tools/cmd/goimports
 
-# android
-RUN cd lnd \
-	&& make android
+WORKDIR lnd
 
-RUN echo "Finished script"
+# Add the ndk directory
+COPY ndk/ ndk/
+ENV ANDROID_NDK_HOME ndk
+RUN ls -l .
+RUN ls -l $ANDROID_NDK_HOME
+
+CMD ["sh", "-c", "ANDROID_NDK_HOME=ndk gomobile init; make android"]
