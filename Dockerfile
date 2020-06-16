@@ -8,6 +8,12 @@ RUN apt-get update && apt-get install -y \
 	sudo \
 	unzip
 
+# Install Java
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && \
+	apt-get install -y openjdk-8-jdk && \
+	apt-get clean;
+
 # Install go
 RUN wget https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz \
 	&& tar -xvf go1.14.4.linux-amd64.tar.gz \
@@ -17,15 +23,6 @@ ENV PATH $GOROOT/bin:$PATH
 ENV GOPATH /root/go
 ENV PATH $GOPATH/bin:$GOROOT/bin:$PATH
 ENV APIPATH /root/go/src/api
-
-# Install Java
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
-	apt-get install -y openjdk-8-jdk && \
-	apt-get clean;
-
-# lnd
-RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
 
 # gomobile
 RUN go get golang.org/x/mobile/cmd/gomobile
@@ -37,9 +34,16 @@ RUN go get -u -v github.com/lightninglabs/falafel
 RUN go get -u -v golang.org/x/tools/cmd/goimports
 
 # protoc
-RUN go get -u github.com/lightningnetwork/lnd/lnrpc \
-	&& cd lnd \
-	&& ./scripts/install_travis_proto.sh
+RUN go get -u github.com/lightningnetwork/lnd/lnrpc
+
+# lnd
+RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.9.1-beta
+
+# protos
+RUN cd lnd \
+	&& wget https://raw.githubusercontent.com/lightningnetwork/lnd/master/scripts/install_travis_proto.sh \
+	&& chmod +x install_travis_proto.sh \
+	&& ./install_travis_proto.sh
 
 ENV ANDROID_NDK_HOME /ndk
 ENV ANDROID_HOME /android
