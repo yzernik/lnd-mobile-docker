@@ -24,7 +24,7 @@ RUN apt-get update && \
 	apt-get install -y openjdk-8-jdk && \
 	apt-get clean;
 
-# Copy in the local repository to build from.
+# lnd
 RUN git clone https://github.com/lightningnetwork/lnd.git --branch v0.10.1-beta
 
 # gomobile
